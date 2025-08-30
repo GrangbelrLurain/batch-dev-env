@@ -52,6 +52,16 @@ if %errorlevel% neq 0 (
 )
 echo.
 
+:: Scoop 설치 여부 확인
+where scoop >nul 2>nul
+if %errorlevel% neq 0 (
+    echo Scoop을 설치합니다...
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh'))"
+) else (
+    echo Scoop이 이미 설치되어 있습니다.
+)
+echo.
+
 echo 필수 개발 도구들을 설치합니다.
 echo 잠시만 기다려주세요...
 echo.
@@ -63,6 +73,7 @@ if %errorlevel% neq 0 (
 ) else (
     echo Git이 이미 설치되어 있습니다.
 )
+echo.
 
 :: Node.js 설치 여부 확인
 choco list nodejs --local-only | find "nodejs " >nul
@@ -72,6 +83,17 @@ if %errorlevel% neq 0 (
 ) else (
     echo Node.js가 이미 설치되어 있습니다.
 )
+echo.
+
+:: Bun 설치 여부 확인
+where bun >nul 2>nul
+if %errorlevel% neq 0 (
+    echo Bun을 설치합니다...
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "irm bun.sh/install.ps1 | iex"
+) else (
+    echo Bun이 이미 설치되어 있습니다.
+)
+echo.
 
 :: Python3 설치 여부 확인
 choco list python3 --local-only | find "python3 " >nul
@@ -81,6 +103,7 @@ if %errorlevel% neq 0 (
 ) else (
     echo Python3가 이미 설치되어 있습니다.
 )
+echo.
 
 :: Oh My Posh 설치 여부 확인
 choco list oh-my-posh --local-only | find "oh-my-posh " >nul
@@ -90,6 +113,27 @@ if %errorlevel% neq 0 (
 ) else (
     echo Oh My Posh가 이미 설치되어 있습니다.
 )
+echo.
+
+:: PSReadLine 모듈 설치 여부 확인
+powershell.exe -Command "Get-Module -Name PSReadLine -ListAvailable" | find "PSReadLine" >nul
+if %errorlevel% neq 0 (
+    echo PSReadLine 모듈을 설치합니다...
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Install-Module -Name PSReadLine -Force"
+) else (
+    echo PSReadLine 모듈이 이미 설치되어 있습니다.
+)
+echo.
+
+:: Terminal-Icons 모듈 설치 여부 확인
+powershell.exe -Command "Get-Module -Name Terminal-Icons -ListAvailable" | find "Terminal-Icons" >nul
+if %errorlevel% neq 0 (
+    echo Terminal-Icons 모듈을 설치합니다...
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Install-Module -Name Terminal-Icons -Force"
+) else (
+    echo Terminal-Icons 모듈이 이미 설치되어 있습니다.
+)
+
 echo.
 echo ===========================================
 echo   모든 자동 설치가 완료되었습니다.
